@@ -1,0 +1,23 @@
+{
+  "name": "talkk",
+  "version": "1.0.0",
+  "description": "因為slack要錢所以來寫一個，加上不想用line辦公",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LJC0915/Talkk.git"
+  },
+  "author": "LJC",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LJC0915/Talkk/issues"
+  },
+  "homepage": "https://github.com/LJC0915/Talkk#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "socket.io": "^2.0.4"
+  }
+}
