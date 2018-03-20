@@ -84,6 +84,8 @@
 
 <body>
     <div id="container">
+        <button onclick="room1()" type="button" class="btn btn-outline-primary">Room A</button>
+        <button onclick="room2()" type="button" class="btn btn-outline-primary">Room B</button>
         <div id="status-box">Server: <span id="status">-</span> / <span id="online">0</span> online.</div>
         <div id="content">
 
@@ -98,6 +100,15 @@
     </div>
 
     <script>
+        var room ;
+        function room1() {
+            room = 'a'
+            socket.emit("changeroom", room);
+        }
+        function room2() {
+            room = 'b'
+            socket.emit("changeroom", room);
+        }
         document.addEventListener("DOMContentLoaded", () => {
 
             var status = document.getElementById("status");
@@ -142,31 +153,30 @@
 
         });
         document.addEventListener("DOMContentLoaded", () => {
-    //...
-    var sendForm = document.getElementById("send-form");
-    var content = document.getElementById("content");    // 加入這行
-    //...
-    socket.on("online", function (amount) {
-        online.innerText = amount;
-    });
+            //...
+            var sendForm = document.getElementById("send-form");
+            var content = document.getElementById("content"); // 加入這行
+            //...
+            socket.on("online", function(amount) {
+                online.innerText = amount;
+            });
 
-    // 加入這一段
-    socket.on("msg", function (d) {
-        var msgBox = document.createElement("div")
-            msgBox.className = "msg";
-        var nameBox = document.createElement("span");
-            nameBox.className = "name";
-        var name = document.createTextNode(d.name);
-        var msg = document.createTextNode(d.msg);
+            // 加入這一段
+            socket.on("msg", function(d) {
+                var msgBox = document.createElement("div")
+                msgBox.className = "msg";
+                var nameBox = document.createElement("span");
+                nameBox.className = "name";
+                var name = document.createTextNode(d.name);
+                var msg = document.createTextNode(d.msg);
 
-        nameBox.appendChild(name);
-        msgBox.appendChild(nameBox);
-        msgBox.appendChild(msg);
-        content.appendChild(msgBox);
-    });
-    //...
-});
-
+                nameBox.appendChild(name);
+                msgBox.appendChild(nameBox);
+                msgBox.appendChild(msg);
+                content.appendChild(msgBox);
+            });
+            //...
+        });
     </script>
 </body>
 

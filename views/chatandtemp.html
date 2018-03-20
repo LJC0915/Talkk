@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>TALKK</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+    </script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
         .sidebar {
@@ -93,7 +97,7 @@
             <div class="p-2 header d-flex flex-row justify-content-between">
                 <div>
                     <div class="chat_type"># Lunch</div>
-                    <div class="dec"> 9 person | description</div>
+                    <div class="dec"> <span id="onlineCount">9</span> person | description</div>
                 </div>
                 <div class="p-1">
                     <div class="input-group">
@@ -101,7 +105,7 @@
                     </div>
                 </div>
             </div>
-            <div class="p-2 chat d-flex flex-column justify-content-end">
+            <div id="chatcontent" class="p-2 chat d-flex flex-column justify-content-end">
                 <div class="p-2 d-flex flex-column">
                     <div><img src="https://i.imgur.com/iQnCQGa.png" alt=""><strong>LJC </strong><span class="time"> 4:20</span></div>
                     <div class="message"> Hi 420 GOGOGO</div>
@@ -120,7 +124,7 @@
             </div>
             <div class="p-2">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Message # Lunch" aria-describedby="sizing-addon2">
+                    <input id="message" type="text" class="form-control" placeholder="Message # Lunch" aria-describedby="sizing-addon2">
                 </div>
             </div>
         </div>
@@ -131,5 +135,31 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+    window.onload = function() {
+        var onlineCount = document.getElementById("onlineCount");
+        var Message = document.getElementById("message");
+        var chatcontent = document.getElementById("chatcontent");
+        socket.on("online", (count) => {
+            onlineCount.innerText = count
+        });
+        // socket.emit("msg", (msg) => {
+        //     console.log(msg)
+        // });
+        socket.on("msg", (msg) => {
+            console.log(chatcontent, msg)
+            var html = '<div class="p-2 d-flex flex-column">\
+                <div><img src="https://i.imgur.com/iQnCQGa.png" alt=""><strong>SitDownPlease </strong><span class="time"> 5:21</span></div>\
+                <div class="message">' + msg + '</div></div>'
+            chatcontent.insertAdjacentHTML('beforeend', html);
+        });
+        Message.addEventListener('keypress', (event) => {
+            if (event.key == 'Enter') {
+                socket.emit("send", Message.value);
+                Message.value = "";
+            }
+        });
+    }
+</script>
 
 </html>
