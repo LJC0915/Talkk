@@ -2,22 +2,24 @@ const express = require('express');
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
+const path = require('path')
 
 
-
+app.use(express.static('dist'))
 app.get('/', (req, res) => {
-    res.sendFile( __dirname + '/views/index.html');
+    res.sendFile(path.resolve('./dist/index.html'));
 });
 app.get('/temp', (req, res) => {
-    res.sendFile( __dirname + '/views/template.html');
+    res.sendFile(path.resolve('./dist/template.html'));
 });
 app.get('/ct', (req, res) => {
-    res.sendFile( __dirname + '/views/chatandtemp.html');
+    res.sendFile(path.resolve('./dist/chatandtemp.html'));
 });
-
+app.get('/react', (req, res) => {
+    res.sendFile(path.resolve('./dist/react.html'));
+});
 // 加入線上人數計數
 let onlineCount = 0;
-
 
 // 修改 connection 事件
 io.on('connection', (socket) => {
@@ -37,7 +39,9 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         // 有人離線了，扣人
-        onlineCount = (onlineCount < 0) ? 0 : onlineCount-=1;
+        onlineCount = (onlineCount < 0)
+            ? 0
+            : onlineCount -= 1;
         io.emit("online", onlineCount);
     });
 
@@ -45,7 +49,7 @@ io.on('connection', (socket) => {
 
         console.log(msg);
         // socket.broadcast.to(channel).emit(msg);
-
+        msg.time = new Date()
         // io.in(socket.room ).emit("msg", msg);
         io.emit("msg", msg);
     });

@@ -71,6 +71,23 @@
 </head>
 
 <body>
+    <div id="loginmodal" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Please Input User Name</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <input id="username" type="text" class="form-control" placeholder="Jessie ?!" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="setUsername" type="button" class="btn btn-primary">Go TALKK</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="frame d-flex flex-row">
         <div class="p-2 sidebar d-flex flex-column">
             <div class="p-3">
@@ -97,7 +114,7 @@
             <div class="p-2 header d-flex flex-row justify-content-between">
                 <div>
                     <div class="chat_type"># Lunch</div>
-                    <div class="dec"> <span id="onlineCount">9</span> person | description</div>
+                    <div class="dec"> <span id="onlineCount">1</span> person | description</div>
                 </div>
                 <div class="p-1">
                     <div class="input-group">
@@ -106,7 +123,7 @@
                 </div>
             </div>
             <div id="chatcontent" class="p-2 chat d-flex flex-column justify-content-end">
-                <div class="p-2 d-flex flex-column">
+                <!-- <div class="p-2 d-flex flex-column">
                     <div><img src="https://i.imgur.com/iQnCQGa.png" alt=""><strong>LJC </strong><span class="time"> 4:20</span></div>
                     <div class="message"> Hi 420 GOGOGO</div>
                 </div>
@@ -120,7 +137,7 @@
                     <div class="message"> 6666666666 </div>
                     <div class="message"> 77777777777777777777777777777777 </div>
                     <div class="message"> 444444 </div>
-                </div>
+                </div> -->
             </div>
             <div class="p-2">
                 <div class="input-group">
@@ -137,28 +154,42 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script>
     window.onload = function() {
-        var onlineCount = document.getElementById("onlineCount");
-        var Message = document.getElementById("message");
-        var chatcontent = document.getElementById("chatcontent");
+        var loginmodal = $("#loginmodal");
+        loginmodal.modal("show");
+        var onlineCount = $("#onlineCount");
+        var Message = $("#message");
+        var chatcontent = $("#chatcontent");
+        var username = $("#username");
         socket.on("online", (count) => {
-            onlineCount.innerText = count
+            // alert(onlineCount.text())
+            onlineCount.html(count);
         });
         // socket.emit("msg", (msg) => {
         //     console.log(msg)
         // });
         socket.on("msg", (msg) => {
-            console.log(chatcontent, msg)
-            var html = '<div class="p-2 d-flex flex-column">\
-                <div><img src="https://i.imgur.com/iQnCQGa.png" alt=""><strong>SitDownPlease </strong><span class="time"> 5:21</span></div>\
-                <div class="message">' + msg + '</div></div>'
-            chatcontent.insertAdjacentHTML('beforeend', html);
+            // alert(msg.time)
+            var html =
+                '<div class="p-2 d-flex flex-column">\
+                <div><img src="https://i.imgur.com/iQnCQGa.png" alt=""><strong>' + msg.username + '</strong><span class="time"> '+ msg.time +'</span></div>\
+                <div class="message">' +
+                msg.msg + '</div></div>'
+            chatcontent.append(html);
         });
-        Message.addEventListener('keypress', (event) => {
+        Message.keypress((event) => {
             if (event.key == 'Enter') {
-                socket.emit("send", Message.value);
-                Message.value = "";
+                var msg = {'username':socket.username, 'msg':Message.val()} ;
+                socket.emit("send", msg);
+                Message.val("");
             }
         });
+
+        $('#setUsername').click(() => {
+            if (username.val().length > 0) {
+                socket.username = username.val();
+                loginmodal.modal("hide");
+            }
+        })
     }
 </script>
 
