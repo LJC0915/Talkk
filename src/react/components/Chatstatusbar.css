@@ -1,0 +1,14 @@
+.header {
+    min-height: 60px;
+    max-height: 60px;
+    background: #5FCC9C;
+}
+
+.dec {
+    font-size: .8125rem;
+    color: #3d363c;
+}
+
+.message {
+    padding-left: 4rem;
+}

@@ -1,10 +1,17 @@
 const path = require('path');
 
+const srcPath = path.resolve(__dirname, 'src/react');
 module.exports = {
     entry: './src/react/index.jsx',
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist')
+    },
+    resolve: {
+        alias: {
+            components: path.resolve(srcPath, 'components'),
+            api: path.resolve(srcPath, 'api')
+        }
     },
     module: {
         rules: [
@@ -17,6 +24,9 @@ module.exports = {
                         presets: ['env', 'react']
                     }
                 }
+            }, {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
             }
         ]
     }
