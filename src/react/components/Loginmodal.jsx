@@ -1,6 +1,7 @@
 import React from 'react';
 import {
     Button,
+    Form,
     Modal,
     ModalHeader,
     ModalBody,
@@ -25,7 +26,6 @@ export default class Loginmodal extends React.Component {
     }
 
     toggle() {
-        console.log(this);
         this.setState({
             modal: !this.state.modal
         });
@@ -33,15 +33,11 @@ export default class Loginmodal extends React.Component {
     componentDidMount() {
         this.toggle();
     }
-    changeBackdrop(e) {
-        console.log(e.target.value);
-    }
     handleInputChange(e) {
-        this.setState({
-            inputValue: e.target.value}
-        );
+        this.setState({inputValue: e.target.value});
     }
-    setUsername() {
+    setUsername(e) {
+        e.preventDefault();
         if (this.state.inputValue) {
             this.props.setUsername(this.state.inputValue);
             this.toggle();
@@ -50,16 +46,15 @@ export default class Loginmodal extends React.Component {
     }
     render() {
         return (<div>
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} backdrop={this.state.backdrop}>
-                <ModalHeader>Please Input User Name</ModalHeader>
+            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} backdrop={this.state.backdrop} >
+                <ModalHeader>Please Input Your Name</ModalHeader>
                 <ModalBody>
-                    <InputGroup>
-                        <Input placeholder="username" value={this.state.inputValue} onChange={this.handleInputChange} />
-                    </InputGroup>
+                    <Form onSubmit={this.setUsername}>
+                        <InputGroup>
+                            <Input type="text" placeholder="Jessie ?!" value={this.state.inputValue} onChange={this.handleInputChange}/>
+                        </InputGroup>
+                    </Form>
                 </ModalBody>
-                <ModalFooter>
-                    <Button color="primary" onClick={this.setUsername}>Go TALKK !!</Button>
-                </ModalFooter>
             </Modal>
         </div>)
     }

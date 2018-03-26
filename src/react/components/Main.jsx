@@ -5,6 +5,7 @@ import Mainframe from 'components/Mainframe.jsx';
 import Sidebar from 'components/Sidebar.jsx';
 
 import './Main.css';
+
 export default class Main extends React.Component {
     constructor(props) {
         super(props);
@@ -16,7 +17,7 @@ export default class Main extends React.Component {
             <Loginmodal setUsername={this.handleSetUsername}/>
             <div className="frame d-flex flex-row">
                 <Sidebar  username={this.state.username}/>
-                <Mainframe  />
+                <Mainframe username={this.state.username} />
             </div>
 
         </div>)
