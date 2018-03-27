@@ -6,7 +6,6 @@ import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 export default class Message extends React.Component {
     constructor(props) {
         super(props);
-        this.socket = io();
         this.sendMessage = this.sendMessage.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.state = {
@@ -15,8 +14,9 @@ export default class Message extends React.Component {
     }
     sendMessage(e) {
         e.preventDefault();
-        let message = {'username': this.props.username, 'msg': this.state.inputValue, 'key': uuid()}
-        this.socket.emit("send", message);
+        let message = {'msg': this.state.inputValue, 'key': uuid()}
+        this.props.socket.emit("send", message);
+        this.props.sendMessage(message);
         this.setState({
             inputValue: ""}
         );

@@ -19,7 +19,7 @@ export default class Loginmodal extends React.Component {
             backdrop: 'static',
             inputValue: ''
         };
-
+        console.log(this.state);
         this.toggle = this.toggle.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.setUsername = this.setUsername.bind(this);

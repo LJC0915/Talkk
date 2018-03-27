@@ -16,13 +16,13 @@ export default class Main extends React.Component {
         return (<div>
             <Loginmodal setUsername={this.handleSetUsername}/>
             <div className="frame d-flex flex-row">
-                <Sidebar  username={this.state.username}/>
-                <Mainframe username={this.state.username} />
+                <Sidebar  username={this.handleSetNumUsers} />
+                <Mainframe ref="mainframe"/>
             </div>
 
         </div>)
     }
     handleSetUsername(username) {
-        this.setState({username: username});
+        this.refs.mainframe.addUser(username);
     }
 }

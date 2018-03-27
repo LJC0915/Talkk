@@ -7,20 +7,20 @@ export default class Chatstatusbar extends React.Component {
         super(props);
     }
     render() {
-        return (
-            <div className="p-2 header d-flex flex-row justify-content-between">
+        return (<div className="p-2 header d-flex flex-row justify-content-between">
             <div>
-                <div className="chat_type"><strong># Lunch {this.props.room}</strong></div>
+                <div className="chat_type">
+                    <strong># Lunch {this.props.room}</strong>
+                </div>
                 <div className="dec">
-                    <span>1 {this.props.onlineCount}</span>
-                     person | description: lorem    {this.props.description}</div>
+                    <span>{this.props.numUsers} </span>
+                    person | description: lorem {this.props.description}</div>
             </div>
             <div className="p-1">
                 <div className="input-group">
                     <input type="text" className="form-control" placeholder="Search" aria-describedby="sizing-addon2"/>
                 </div>
             </div>
-        </div>
-    )
+        </div>)
     }
 }
