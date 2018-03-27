@@ -36,7 +36,8 @@ io.on('connection', (socket) => {
             return;
 
         // we store the username in the socket session for this client
-        this.username = username;
+        console.log(this);
+        socket.username = username;
 
         ++numUsers;
         addedUser = true;
@@ -63,7 +64,7 @@ io.on('connection', (socket) => {
     socket.on("send", (msg) => {
         // socket.broadcast.to(channel).emit(msg);
         msg.time = new Date()
-        msg.username = this.username;
+        msg.username = socket.username;
         console.log(msg);
         // io.in(socket.room ).emit("msg", msg);
         socket.broadcast.emit("msg", msg);
@@ -73,7 +74,7 @@ io.on('connection', (socket) => {
         if (addedUser) {
             --numUsers;
             socket.broadcast.emit('user left', {
-                username: this.username,
+                username: socket.username,
                 numUsers: numUsers
             });
         }
