@@ -3,7 +3,7 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const path = require('path')
-
+const PORT = process.env.PORT || 5000
 app.use(express.static('dist'))
 app.get('/', (req, res) => {
     res.sendFile(path.resolve('./dist/index.html'));
@@ -81,6 +81,6 @@ io.on('connection', (socket) => {
 });
 
 // 注意，這邊的 server 原本是 app
-server.listen(3000, () => {
-    console.log("Server Started. http://localhost:3000");
+server.listen(PORT, () => {
+    console.log("Server Started. http://localhost:" + PORT);
 });
